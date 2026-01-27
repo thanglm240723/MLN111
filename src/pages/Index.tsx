@@ -64,7 +64,7 @@ const Index = () => {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         {/* Background with marble texture */}
         <div className="absolute inset-0 marble-texture opacity-50" />
-        
+
         {/* Decorative columns on sides */}
         <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 column-border-left opacity-30" />
         <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 column-border-right opacity-30" />
@@ -80,7 +80,7 @@ const Index = () => {
             >
               <motion.div variants={itemVariants}>
                 <span className="inline-block px-4 py-1 mb-6 text-sm font-body text-gold border border-gold/30 rounded-full">
-                  Đồ án cuối kỳ • Đại học
+                  Project MLN111 • Group 8
                 </span>
               </motion.div>
 
@@ -104,7 +104,7 @@ const Index = () => {
                 variants={itemVariants}
                 className="text-base text-muted-foreground/80 max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed"
               >
-                Triết học Mác-Lênin là thế giới quan khoa học của giai cấp công nhân và nhân dân lao động, 
+                Triết học Mác-Lênin là thế giới quan khoa học của giai cấp công nhân và nhân dân lao động,
                 là cơ sở lý luận của chủ nghĩa xã hội khoa học, là kim chỉ nam cho hành động cách mạng.
               </motion.p>
 
@@ -138,13 +138,13 @@ const Index = () => {
                 {/* Decorative frame */}
                 <div className="absolute -inset-4 border border-gold/20 rounded-lg" />
                 <div className="absolute -inset-8 border border-gold/10 rounded-lg" />
-                
+
                 <img
                   src={heroStatue}
                   alt="Classical philosopher statue"
                   className="w-full h-auto rounded-lg shadow-2xl"
                 />
-                
+
                 {/* Overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent rounded-lg" />
               </div>
@@ -242,7 +242,7 @@ const Index = () => {
           >
             <div className="text-gold text-6xl mb-6">"</div>
             <blockquote className="text-2xl md:text-3xl font-heading italic text-foreground leading-relaxed mb-6">
-              Các nhà triết học chỉ giải thích thế giới bằng nhiều cách khác nhau, 
+              Các nhà triết học chỉ giải thích thế giới bằng nhiều cách khác nhau,
               vấn đề là cải tạo thế giới.
             </blockquote>
             <cite className="text-gold font-heading text-lg">
