@@ -1,0 +1,361 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Classical Greek-Roman Design System for Triết học Mác - Lênin */
+
+@layer base {
+  :root {
+    /* Light mode (not default, but available) */
+    --background: 40 15% 95%;
+    --foreground: 240 10% 10%;
+    
+    --card: 40 20% 92%;
+    --card-foreground: 240 10% 10%;
+    
+    --popover: 40 20% 92%;
+    --popover-foreground: 240 10% 10%;
+    
+    --primary: 43 74% 49%;
+    --primary-foreground: 240 10% 5%;
+    
+    --secondary: 40 15% 88%;
+    --secondary-foreground: 240 10% 15%;
+    
+    --muted: 40 10% 85%;
+    --muted-foreground: 240 8% 40%;
+    
+    --accent: 0 68% 42%;
+    --accent-foreground: 40 20% 98%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 40 20% 98%;
+    
+    --border: 40 15% 80%;
+    --input: 40 15% 80%;
+    --ring: 43 74% 49%;
+    
+    --radius: 0.5rem;
+    
+    /* Custom design tokens */
+    --gold: 43 74% 49%;
+    --gold-light: 43 74% 65%;
+    --gold-dark: 43 74% 35%;
+    --crimson: 0 68% 42%;
+    --crimson-light: 0 68% 55%;
+    --marble: 40 20% 95%;
+    --marble-dark: 40 15% 85%;
+    --parchment: 35 30% 90%;
+    --obsidian: 240 10% 8%;
+  }
+
+  .dark {
+    --background: 240 10% 4%;
+    --foreground: 40 20% 92%;
+    
+    --card: 240 10% 8%;
+    --card-foreground: 40 20% 92%;
+    
+    --popover: 240 10% 8%;
+    --popover-foreground: 40 20% 92%;
+    
+    --primary: 43 74% 52%;
+    --primary-foreground: 240 10% 5%;
+    
+    --secondary: 240 8% 15%;
+    --secondary-foreground: 40 20% 90%;
+    
+    --muted: 240 8% 12%;
+    --muted-foreground: 40 10% 60%;
+    
+    --accent: 0 68% 45%;
+    --accent-foreground: 40 20% 98%;
+    
+    --destructive: 0 62.8% 45%;
+    --destructive-foreground: 40 20% 98%;
+    
+    --border: 240 8% 18%;
+    --input: 240 8% 18%;
+    --ring: 43 74% 52%;
+    
+    /* Custom design tokens - dark mode */
+    --gold: 43 74% 52%;
+    --gold-light: 43 74% 65%;
+    --gold-dark: 43 74% 40%;
+    --crimson: 0 68% 45%;
+    --crimson-light: 0 68% 58%;
+    --marble: 40 15% 85%;
+    --marble-dark: 40 10% 70%;
+    --parchment: 35 25% 12%;
+    --obsidian: 240 10% 4%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Marble texture overlay */
+  .marble-texture {
+    background-image: 
+      linear-gradient(135deg, transparent 0%, hsl(var(--background) / 0.8) 50%, transparent 100%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  /* Ancient column pattern for side borders */
+  .column-border-left {
+    position: relative;
+  }
+  
+  .column-border-left::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--gold) / 0.3),
+      hsl(var(--gold) / 0.6) 10%,
+      hsl(var(--gold) / 0.3) 50%,
+      hsl(var(--gold) / 0.6) 90%,
+      hsl(var(--gold) / 0.3)
+    );
+  }
+
+  .column-border-right {
+    position: relative;
+  }
+  
+  .column-border-right::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--gold) / 0.3),
+      hsl(var(--gold) / 0.6) 10%,
+      hsl(var(--gold) / 0.3) 50%,
+      hsl(var(--gold) / 0.6) 90%,
+      hsl(var(--gold) / 0.3)
+    );
+  }
+
+  /* Gold gradient text */
+  .text-gold-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--gold-light)) 0%,
+      hsl(var(--gold)) 50%,
+      hsl(var(--gold-dark)) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Parchment card effect */
+  .parchment-card {
+    background: 
+      linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.95) 100%);
+    border: 1px solid hsl(var(--gold) / 0.2);
+    box-shadow: 
+      0 4px 6px -1px hsl(var(--gold) / 0.1),
+      0 2px 4px -2px hsl(var(--gold) / 0.1),
+      inset 0 1px 0 hsl(var(--gold) / 0.1);
+  }
+
+  /* Classical button style */
+  .btn-classical {
+    @apply relative overflow-hidden transition-all duration-300;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--gold)) 0%,
+      hsl(var(--gold-dark)) 100%
+    );
+    box-shadow: 
+      0 4px 14px 0 hsl(var(--gold) / 0.4),
+      inset 0 1px 0 hsl(var(--gold-light) / 0.5);
+  }
+
+  .btn-classical:hover {
+    box-shadow: 
+      0 6px 20px 0 hsl(var(--gold) / 0.5),
+      inset 0 1px 0 hsl(var(--gold-light) / 0.6);
+    transform: translateY(-2px);
+  }
+
+  .btn-crimson {
+    @apply relative overflow-hidden transition-all duration-300;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--crimson)) 0%,
+      hsl(0 68% 35%) 100%
+    );
+    box-shadow: 
+      0 4px 14px 0 hsl(var(--crimson) / 0.4),
+      inset 0 1px 0 hsl(var(--crimson-light) / 0.5);
+  }
+
+  .btn-crimson:hover {
+    box-shadow: 
+      0 6px 20px 0 hsl(var(--crimson) / 0.5),
+      inset 0 1px 0 hsl(var(--crimson-light) / 0.6);
+    transform: translateY(-2px);
+  }
+
+  /* Ornate divider */
+  .ornate-divider {
+    @apply relative flex items-center justify-center my-8;
+  }
+
+  .ornate-divider::before,
+  .ornate-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      hsl(var(--gold) / 0.5),
+      transparent
+    );
+  }
+
+  .ornate-divider > * {
+    @apply px-4;
+    color: hsl(var(--gold));
+  }
+
+  /* Timeline styles */
+  .timeline-node {
+    @apply relative;
+  }
+
+  .timeline-node::after {
+    content: '';
+    @apply absolute w-4 h-4 rounded-full border-2;
+    border-color: hsl(var(--gold));
+    background: hsl(var(--background));
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -2rem;
+  }
+
+  /* Ancient scroll animation */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Navbar marble border */
+  .navbar-classical {
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(
+      to right,
+      transparent,
+      hsl(var(--gold) / 0.3) 20%,
+      hsl(var(--gold) / 0.6) 50%,
+      hsl(var(--gold) / 0.3) 80%,
+      transparent
+    ) 1;
+  }
+
+  /* Quiz option styles */
+  .quiz-option {
+    @apply transition-all duration-200 cursor-pointer;
+    border: 1px solid hsl(var(--border));
+  }
+
+  .quiz-option:hover {
+    border-color: hsl(var(--gold) / 0.5);
+    background: hsl(var(--gold) / 0.05);
+  }
+
+  .quiz-option.selected {
+    border-color: hsl(var(--gold));
+    background: hsl(var(--gold) / 0.1);
+  }
+
+  .quiz-option.correct {
+    border-color: hsl(142 76% 36%);
+    background: hsl(142 76% 36% / 0.1);
+  }
+
+  .quiz-option.incorrect {
+    border-color: hsl(var(--crimson));
+    background: hsl(var(--crimson) / 0.1);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
