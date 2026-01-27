@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  app:
+    # Dùng biến DOCKER_USERNAME (được truyền từ script deploy)
+    image: ${DOCKER_USERNAME}/vite-react-app:latest
+    container_name: react_web
+    restart: always
+    ports:
+      - "80:80"
