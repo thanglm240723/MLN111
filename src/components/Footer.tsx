@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="relative bg-card border-t border-gold/20 mt-20">
       {/* Ornate top border */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
-      
+
       <div className="container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Brand */}
@@ -64,7 +64,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-gold/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Đồ án cuối kỳ - Triết học Mác-Lênin
+            © {new Date().getFullYear()}  Triết học Mác-Lênin
           </p>
           <p className="text-sm text-muted-foreground italic">
             "Các nhà triết học chỉ giải thích thế giới bằng nhiều cách khác nhau, vấn đề là cải tạo thế giới." — Karl Marx
