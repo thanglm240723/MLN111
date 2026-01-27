@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom"; // Đã đổi thành HashRouter
 import { useEffect } from "react";
 import Index from "./pages/Index";
 import TimelinePage from "./pages/TimelinePage";
@@ -24,7 +24,7 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        {/* Đã sửa từ BrowserRouter thành HashRouter để chạy được trên GitHub Pages */}
+        {/* Đã sửa thành HashRouter */}
         <HashRouter>
           <Routes>
             <Route path="/" element={<Index />} />
