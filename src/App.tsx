@@ -10,6 +10,7 @@ import PrinciplesPage from "./pages/PrinciplesPage";
 import QuizPage from "./pages/QuizPage";
 import PDFUploadPage from "./pages/PDFUploadPage";
 import NotFound from "./pages/NotFound";
+import { AIChatbot } from "./components/AIChatbot";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => {
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <AIChatbot />
         </HashRouter>
       </TooltipProvider>
     </QueryClientProvider>
