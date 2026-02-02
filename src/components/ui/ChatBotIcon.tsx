@@ -1,5 +1,5 @@
 import { MessageCircle, X } from 'lucide-react';
-import { Button } from '@/components/ui/button'; // Sử dụng component Button có sẵn
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 
 export const ChatBotIcon = () => {
