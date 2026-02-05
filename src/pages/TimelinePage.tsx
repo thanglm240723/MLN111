@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { ChevronLeft, ChevronRight, Calendar, User, BookOpen } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, User, BookOpen, FileText, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// CHỈNH SỬA TẠI ĐÂY: Thêm vrUrl vào Interface để lưu link 360
+// Interface mở rộng: hỗ trợ VR, tài liệu PDF, và biểu đồ
 interface TimelineEvent {
   year: string;
   title: string;
@@ -14,7 +14,105 @@ interface TimelineEvent {
   figure?: string;
   type: 'birth' | 'work' | 'event' | 'vietnam';
   vrUrl?: string;
+  documentUrl?: string; // Link đến tài liệu PDF
+  chartType?: 'surplus-value'; // Loại biểu đồ cần hiển thị
 }
+
+// Component hiển thị biểu đồ giá trị thặng dư
+const SurplusValueChart = () => {
+  return (
+    <div className="mt-8 pt-6 border-t border-gold/20">
+      <h3 className="text-lg font-heading font-bold text-gold mb-4 flex items-center gap-2">
+        <TrendingUp className="h-5 w-5" />
+        Sơ đồ Giá trị thặng dư
+      </h3>
+      <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-xl border border-gold/30">
+        {/* Công thức cơ bản */}
+        <div className="mb-6 text-center">
+          <div className="inline-block bg-gold/10 px-6 py-3 rounded-lg border border-gold/40">
+            <p className="text-xl font-heading text-gold mb-1">Công thức cơ bản</p>
+            <p className="text-2xl font-bold text-white">W = C + V + M</p>
+            <p className="text-xs text-gray-400 mt-2">
+              W: Giá trị hàng hóa | C: Tư bản bất biến | V: Tư bản khả biến | M: Giá trị thặng dư
+            </p>
+          </div>
+        </div>
+
+        {/* Biểu đồ trực quan */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Cột 1: Phân tích thành phần */}
+          <div className="space-y-4">
+            <div className="bg-blue-500/20 p-4 rounded-lg border border-blue-500/40">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <h4 className="font-heading font-bold text-blue-400">Tư bản bất biến (C)</h4>
+              </div>
+              <p className="text-sm text-gray-300">Máy móc, nguyên liệu, xưởng sản xuất</p>
+              <div className="mt-2 bg-blue-500/30 h-8 rounded flex items-center justify-center text-sm font-bold text-white">
+                60%
+              </div>
+            </div>
+
+            <div className="bg-green-500/20 p-4 rounded-lg border border-green-500/40">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <h4 className="font-heading font-bold text-green-400">Tư bản khả biến (V)</h4>
+              </div>
+              <p className="text-sm text-gray-300">Tiền công trả cho công nhân</p>
+              <div className="mt-2 bg-green-500/30 h-8 rounded flex items-center justify-center text-sm font-bold text-white">
+                20%
+              </div>
+            </div>
+
+            <div className="bg-red-500/20 p-4 rounded-lg border border-red-500/40">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <h4 className="font-heading font-bold text-red-400">Giá trị thặng dư (M)</h4>
+              </div>
+              <p className="text-sm text-gray-300">Lợi nhuận bị tư bản bóc lột</p>
+              <div className="mt-2 bg-red-500/30 h-8 rounded flex items-center justify-center text-sm font-bold text-white">
+                20%
+              </div>
+            </div>
+          </div>
+
+          {/* Cột 2: Tỷ suất giá trị thặng dư */}
+          <div className="flex flex-col justify-center">
+            <div className="bg-gold/10 p-6 rounded-lg border border-gold/40">
+              <h4 className="font-heading font-bold text-gold text-center mb-4">Tỷ suất giá trị thặng dư</h4>
+              <div className="text-center mb-4">
+                <p className="text-3xl font-bold text-white mb-2">m' = M / V</p>
+                <p className="text-sm text-gray-400">Tỷ lệ bóc lột sức lao động</p>
+              </div>
+
+              <div className="bg-crimson/20 p-4 rounded border border-crimson/40">
+                <p className="text-center text-sm text-gray-300 mb-2">Ví dụ:</p>
+                <p className="text-center text-xl font-bold text-crimson">m' = 20 / 20 = 100%</p>
+                <p className="text-xs text-center text-gray-400 mt-2">
+                  Công nhân làm 8 giờ: 4 giờ cho bản thân, 4 giờ bị bóc lột
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-4 bg-amber-500/10 p-4 rounded-lg border border-amber-500/30">
+              <p className="text-xs text-amber-200 text-center leading-relaxed">
+                💡 <strong>Bản chất:</strong> Tư bản gia tăng giá trị thặng dư bằng cách kéo dài thời gian lao động
+                hoặc tăng cường độ lao động mà không tăng lương tương ứng.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Giải thích thêm */}
+        <div className="mt-6 pt-4 border-t border-gold/20">
+          <p className="text-sm text-gray-300 text-center italic">
+            "Giá trị thặng dư là nguồn gốc của lợi nhuận tư bản chủ nghĩa, được tạo ra từ lao động không công của giai cấp công nhân."
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const timelineEvents: TimelineEvent[] = [
   {
@@ -24,7 +122,6 @@ const timelineEvents: TimelineEvent[] = [
     details: 'Marx là nhà triết học, nhà kinh tế học, nhà xã hội học và nhà cách mạng người Đức gốc Do Thái. Ông là người sáng lập chủ nghĩa Marx cùng với Engels, đặt nền móng cho chủ nghĩa cộng sản hiện đại.',
     figure: 'Karl Marx (1818-1883)',
     type: 'birth',
-    // Ví dụ: link VR nhà của Karl Marx tại Trier
     vrUrl: 'https://www.google.com/maps/embed?pb=!4v1770016169242!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRHU5Y3EzRmc.!2m2!1d49.75393591166603!2d6.635704069658873!3f0.5978574337452773!4f9.817269171684188!5f0.4000000000000002'
   },
   {
@@ -34,7 +131,7 @@ const timelineEvents: TimelineEvent[] = [
     details: 'Engels là nhà triết học, nhà khoa học xã hội, nhà báo và doanh nhân người Đức. Ông là người bạn và cộng sự thân cận nhất của Marx, đồng sáng lập chủ nghĩa Marx.',
     figure: 'Friedrich Engels (1820-1895)',
     type: 'birth',
-    vrUrl: 'https://www.google.com/maps/embed?pb=!4v1770017474070!6m8!1m7!1sULeM0DN0VLejwprakF-hEw!2m2!1d51.26644869629917!2d7.190816853591282!3f226.00594223147422!4f12.334976774730876!5f0.4000000000000002" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade'
+    vrUrl: 'https://www.google.com/maps/embed?pb=!4v1770017474070!6m8!1m7!1sULeM0DN0VLejwprakF-hEw!2m2!1d51.26644869629917!2d7.190816853591282!3f226.00594223147422!4f12.334976774730876!5f0.4000000000000002'
   },
   {
     year: '1848',
@@ -42,6 +139,8 @@ const timelineEvents: TimelineEvent[] = [
     description: 'Marx và Engels xuất bản "Tuyên ngôn của Đảng Cộng sản".',
     details: 'Đây là văn kiện chính trị quan trọng nhất của phong trào cộng sản quốc tế. Tuyên ngôn trình bày lý luận về đấu tranh giai cấp, bản chất của giai cấp tư sản và vô sản, và kết thúc bằng lời kêu gọi nổi tiếng: "Vô sản tất cả các nước, đoàn kết lại!"',
     type: 'work',
+    // Link đến bản PDF Tuyên ngôn (có thể thay bằng link thực tế)
+    documentUrl: 'https://www.scribd.com/document/781979475/TUYEN-NGON-C%E1%BB%A6A-%C4%90%E1%BA%A2NG-C%E1%BB%98NG-S%E1%BA%A2N'
   },
   {
     year: '1867',
@@ -49,6 +148,7 @@ const timelineEvents: TimelineEvent[] = [
     description: 'Marx xuất bản tập I của bộ "Tư bản".',
     details: 'Bộ Tư bản là tác phẩm kinh tế - chính trị học quan trọng nhất của Marx, phân tích sâu sắc về phương thức sản xuất tư bản chủ nghĩa, quy luật giá trị thặng dư, và mâu thuẫn nội tại của chủ nghĩa tư bản.',
     type: 'work',
+    chartType: 'surplus-value'
   },
   {
     year: '1870',
@@ -57,7 +157,7 @@ const timelineEvents: TimelineEvent[] = [
     details: 'Lenin là nhà lý luận chính trị, nhà cách mạng vĩ đại, người lãnh đạo Cách mạng Tháng Mười Nga và sáng lập Nhà nước Xô viết. Ông đã phát triển chủ nghĩa Marx thành chủ nghĩa Mác-Lênin.',
     figure: 'V.I. Lenin (1870-1924)',
     type: 'birth',
-    vrUrl: 'https://www.google.com/maps/embed?pb=!4v1700000000000!6m8!1m7!1sCAoSLEFGMVFpcE4zXzVfS2pWXzVfS2pWXzVfS2pWXzVfS2pWXzVfS2pW!2m2!1d54.3107!2d48.3904!3f0!4f0!5f0.7820865974627469'
+    vrUrl: 'https://www.google.com/maps/embed?pb=!4v1770266560803!6m8!1m7!1sTWRDy7Ana1fmOJwo59MsKA!2m2!1d54.31867003270723!2d48.39780216887247!3f104.12798005568597!4f0.4967946380091206!5f0.7820865974627469" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade'
   },
   {
     year: '1871',
@@ -187,11 +287,17 @@ export default function TimelinePage() {
                     className={`w-full text-left p-4 parchment-card rounded-lg transition-all duration-300 ${selectedEvent?.year === event.year ? 'border-gold ring-2 ring-gold/20' : 'hover:border-gold/40'
                       }`}
                   >
-                    <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-2 mb-3 flex-wrap">
                       <span className="text-2xl font-heading font-bold text-gold">{event.year}</span>
-                      {/* CHỈNH SỬA TẠI ĐÂY: Hiện nhãn VR nếu có link */}
+                      {/* Nhãn cho các loại nội dung đặc biệt */}
                       {event.vrUrl && (
                         <span className="px-1.5 py-0.5 text-[10px] bg-red-600 text-white rounded animate-pulse">VR 360</span>
+                      )}
+                      {event.documentUrl && (
+                        <span className="px-1.5 py-0.5 text-[10px] bg-blue-600 text-white rounded">📄 Tài liệu</span>
+                      )}
+                      {event.chartType && (
+                        <span className="px-1.5 py-0.5 text-[10px] bg-green-600 text-white rounded">📊 Biểu đồ</span>
                       )}
                       <span className={`px-2 py-0.5 text-xs rounded-full border ${getTypeColor(event.type)}`}>
                         {getTypeLabel(event.type)}
@@ -232,7 +338,7 @@ export default function TimelinePage() {
                   <p className="text-muted-foreground leading-relaxed">{selectedEvent.description}</p>
                   <p className="text-foreground leading-relaxed">{selectedEvent.details}</p>
 
-                  {/* CHỈNH SỬA TẠI ĐÂY: Khung hiển thị VR360 chi tiết */}
+                  {/* Hiển thị VR 360 */}
                   {selectedEvent.vrUrl && (
                     <div className="mt-8 pt-6 border-t border-gold/20">
                       <h3 className="text-lg font-heading font-bold text-gold mb-4 flex items-center gap-2">
@@ -252,6 +358,36 @@ export default function TimelinePage() {
                       </p>
                     </div>
                   )}
+
+                  {/* Hiển thị tài liệu PDF/Link */}
+                  {selectedEvent.documentUrl && (
+                    <div className="mt-8 pt-6 border-t border-gold/20">
+                      <h3 className="text-lg font-heading font-bold text-gold mb-4 flex items-center gap-2">
+                        <FileText className="h-5 w-5" />
+                        Tài liệu gốc
+                      </h3>
+                      <div className="bg-gradient-to-br from-blue-900/30 to-blue-800/20 p-6 rounded-xl border border-blue-500/30">
+                        <p className="text-sm text-gray-300 mb-4">
+                          Đọc toàn văn "Tuyên ngôn của Đảng Cộng sản" - văn kiện lịch sử vĩ đại của phong trào cộng sản quốc tế.
+                        </p>
+                        <a
+                          href={selectedEvent.documentUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors font-heading"
+                        >
+                          <FileText className="h-4 w-4" />
+                          Xem tài liệu đầy đủ
+                        </a>
+                        <p className="text-xs text-gray-400 mt-3 italic">
+                          * Tài liệu tiếng Việt từ Marxists Internet Archive
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Hiển thị biểu đồ giá trị thặng dư */}
+                  {selectedEvent.chartType === 'surplus-value' && <SurplusValueChart />}
 
                   {selectedEvent.figure && (
                     <div className="flex items-center gap-3 p-4 bg-gold/5 rounded-lg border border-gold/20">
