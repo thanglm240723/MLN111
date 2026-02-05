@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { MessageCircle, Send, X, Loader2, AlertCircle, Quote } from 'lucide-react';
+import { MessageCircle, Send, X, Loader2, Quote, Zap } from 'lucide-react';
+import AIChallenge from './AIChallenge'; // Đảm bảo bạn đã tạo file này
 
 // Khởi tạo Gemini với API Key từ môi trường
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
@@ -11,20 +12,20 @@ type Personality = 'marx' | 'lenin' | 'default';
 
 export function AIChatbot() {
     const [isOpen, setIsOpen] = useState(false);
+    const [showChallenge, setShowChallenge] = useState(false);
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState<{ role: string; text: string; personality?: Personality }[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [personality, setPersonality] = useState<Personality>('marx');
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    // Tự động cuộn xuống khi có tin nhắn mới hoặc đang load
+    // Tự động cuộn xuống khi có tin nhắn mới
     useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, [messages, isLoading]);
 
-    // Cấu hình phong cách trả lời cho từng nhân vật
     const personalityConfig = {
         marx: {
             name: "Karl Marx",
@@ -57,26 +58,11 @@ export function AIChatbot() {
         setIsLoading(true);
 
         try {
-            const modelNames = ["gemini-2.5-flash"];
-            let result = null;
-            let lastError = null;
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+            const systemInstruction = personalityConfig[personality].prompt;
+            const promptWithContext = `${systemInstruction}\n\nCâu hỏi của sinh viên: ${currentInput}`;
 
-            for (const modelName of modelNames) {
-                try {
-                    const model = genAI.getGenerativeModel({ model: modelName });
-                    const systemInstruction = personalityConfig[personality].prompt;
-                    const promptWithContext = `${systemInstruction}\n\nCâu hỏi của sinh viên: ${currentInput}`;
-
-                    result = await model.generateContent(promptWithContext);
-                    break;
-                } catch (e) {
-                    lastError = e;
-                    continue;
-                }
-            }
-
-            if (!result) throw lastError || new Error("Không thể kết nối");
-
+            const result = await model.generateContent(promptWithContext);
             const response = await result.response;
             const text = response.text();
 
@@ -85,7 +71,7 @@ export function AIChatbot() {
             console.error("Lỗi Chatbot:", error);
             setMessages([
                 ...newMessages,
-                { role: "error", text: "Lỗi kết nối API. Vui lòng kiểm tra lại cấu hình hoặc thử lại sau." },
+                { role: "error", text: "Lỗi kết nối API. Vui lòng kiểm tra lại cấu hình." },
             ]);
         } finally {
             setIsLoading(false);
@@ -100,13 +86,28 @@ export function AIChatbot() {
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-            {/* Cửa sổ chat */}
-            {isOpen && (
-                <div className="mb-4 w-96 h-[550px] parchment-card shadow-2xl rounded-xl overflow-hidden border border-gold/20 flex flex-col animate-in slide-in-from-bottom-5 duration-300">
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+            {/* Nút Thách đấu AI (Nằm trên nút chat chính) */}
+            {!isOpen && (
+                <div className="flex flex-col items-center gap-1 group animate-in fade-in slide-in-from-bottom-2">
+                    <Button
+                        onClick={() => setShowChallenge(true)}
+                        className="rounded-full w-12 h-12 bg-emerald-600 hover:bg-emerald-700 shadow-lg transition-transform hover:scale-110"
+                        size="icon"
+                    >
+                        <Zap className="w-6 h-6 text-white fill-white" />
+                    </Button>
+                    <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                        Thách đấu
+                    </span>
+                </div>
+            )}
 
+            {/* Cửa sổ chat chính */}
+            {isOpen && (
+                <div className="mb-2 w-96 h-[550px] parchment-card shadow-2xl rounded-xl overflow-hidden border border-gold/20 flex flex-col animate-in slide-in-from-bottom-5 duration-300">
                     {/* Header */}
-                    <div className={`p-4 ${personalityConfig[personality].color} text-white font-heading flex items-center justify-between transition-colors duration-500 shadow-md`}>
+                    <div className={`p-4 ${personalityConfig[personality].color} text-white font-heading flex items-center justify-between shadow-md`}>
                         <div className="flex items-center gap-2">
                             <Quote size={18} />
                             <span className="font-bold tracking-tight">Đàm đạo cùng {personalityConfig[personality].name}</span>
@@ -123,8 +124,8 @@ export function AIChatbot() {
                                 key={p}
                                 onClick={() => setPersonality(p)}
                                 className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-widest transition-all ${personality === p
-                                        ? `bg-white text-gold border-b-2 border-gold`
-                                        : `text-muted-foreground hover:bg-white/50`
+                                    ? `bg-white text-gold border-b-2 border-gold`
+                                    : `text-muted-foreground hover:bg-white/50`
                                     }`}
                             >
                                 {personalityConfig[p].name.split(' ').pop()}
@@ -132,7 +133,7 @@ export function AIChatbot() {
                         ))}
                     </div>
 
-                    {/* Khu vực nội dung tin nhắn */}
+                    {/* Nội dung chat */}
                     <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 bg-background/50 space-y-4">
                         {messages.length === 0 && (
                             <div className="text-center mt-10 space-y-2 opacity-60">
@@ -144,31 +145,20 @@ export function AIChatbot() {
                         )}
 
                         {messages.map((m, i) => (
-                            <div
-                                key={i}
-                                className={`flex ${m.role === "user" ? "justify-end" : "justify-start animate-in fade-in slide-in-from-left-2"}`}
-                            >
-                                <div
-                                    className={`max-w-[85%] p-3 rounded-2xl text-sm shadow-sm ${m.role === "user"
-                                            ? "bg-gold text-white rounded-tr-none border border-gold"
-                                            : m.role === "error"
-                                                ? "bg-red-50 text-red-800 border border-red-200"
-                                                : "bg-white border border-gold/10 rounded-tl-none shadow-sm"
-                                        }`}
-                                >
+                            <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                                <div className={`max-w-[85%] p-3 rounded-2xl text-sm shadow-sm ${m.role === "user"
+                                    ? "bg-gold text-white rounded-tr-none border border-gold"
+                                    : "bg-white border border-gold/10 rounded-tl-none text-slate-900 font-medium"
+                                    }`}>
                                     {m.role === "ai" && (
                                         <div className="text-[10px] uppercase tracking-widest font-black mb-1 text-gold">
                                             {personalityConfig[m.personality || 'default'].name}
                                         </div>
                                     )}
-
-                                    <p className={`whitespace-pre-wrap leading-relaxed ${m.role === 'user' ? 'text-white' : 'text-slate-900 font-medium'}`}>
-                                        {m.text}
-                                    </p>
+                                    <p className="whitespace-pre-wrap leading-relaxed">{m.text}</p>
                                 </div>
                             </div>
                         ))}
-
                         {isLoading && (
                             <div className="flex justify-start">
                                 <div className="bg-white border border-gold/10 p-3 rounded-2xl rounded-tl-none shadow-sm">
@@ -178,7 +168,7 @@ export function AIChatbot() {
                         )}
                     </div>
 
-                    {/* Khu vực nhập liệu - ĐÃ CẬP NHẬT MÀU VÀNG CHỮ TRẮNG */}
+                    {/* Ô nhập liệu: NỀN VÀNG - CHỮ TRẮNG */}
                     <div className="p-4 bg-white border-t border-gold/10">
                         <div className="flex gap-2">
                             <Input
@@ -202,7 +192,7 @@ export function AIChatbot() {
                 </div>
             )}
 
-            {/* Nút bấm Chat & Label AI Assistant */}
+            {/* Nút Chat chính */}
             <div className="flex flex-col items-center gap-1 group">
                 <Button
                     onClick={() => setIsOpen(!isOpen)}
@@ -216,6 +206,9 @@ export function AIChatbot() {
                     AI Assistant
                 </span>
             </div>
+
+            {/* Màn hình thách đấu (Overlay) */}
+            {showChallenge && <AIChallenge onBack={() => setShowChallenge(false)} />}
         </div>
     );
 }
