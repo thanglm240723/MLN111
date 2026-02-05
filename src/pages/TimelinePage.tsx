@@ -34,6 +34,7 @@ const timelineEvents: TimelineEvent[] = [
     details: 'Engels là nhà triết học, nhà khoa học xã hội, nhà báo và doanh nhân người Đức. Ông là người bạn và cộng sự thân cận nhất của Marx, đồng sáng lập chủ nghĩa Marx.',
     figure: 'Friedrich Engels (1820-1895)',
     type: 'birth',
+    vrUrl: 'https://www.google.com/maps/embed?pb=!4v1770017474070!6m8!1m7!1sULeM0DN0VLejwprakF-hEw!2m2!1d51.26644869629917!2d7.190816853591282!3f226.00594223147422!4f12.334976774730876!5f0.4000000000000002" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade'
   },
   {
     year: '1848',
